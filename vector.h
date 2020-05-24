@@ -3,33 +3,33 @@
 
 template<typename T>
 struct vector {
-    using iterator = T *;
-    using const_iterator = T const *;
+    using iterator = T*;
+    using const_iterator = T const*;
 
     vector() noexcept: vector(0, 0, nullptr) {}
 
-    vector(vector<T> const &other);
+    vector(vector<T> const& other);
 
-    vector &operator=(vector const &other);
+    vector& operator=(vector const& other);
 
     ~vector() {
         clear();
         operator delete(data_);
     }
 
-    T &operator[](size_t i) noexcept {
+    T& operator[](size_t i) noexcept {
         return data_[i];
     }
 
-    T const &operator[](size_t i) const noexcept {
+    T const& operator[](size_t i) const noexcept {
         return data_[i];
     }
 
-    T *data() noexcept {
+    T* data() noexcept {
         return data_;
     }
 
-    T const *data() const noexcept {
+    T const* data() const noexcept {
         return data_;
     }
 
@@ -37,23 +37,23 @@ struct vector {
         return size_;
     }
 
-    T &front() noexcept {
+    T& front() noexcept {
         return *begin();
     }
 
-    T const &front() const noexcept {
+    T const& front() const noexcept {
         return *begin();
     }
 
-    T &back() noexcept {
+    T& back() noexcept {
         return *(end() - 1);
     }
 
-    T const &back() const noexcept {
+    T const& back() const noexcept {
         return *(end() - 1);
     }
 
-    void push_back(T const &value);
+    void push_back(T const& value);
 
     void pop_back() noexcept;
 
@@ -77,7 +77,7 @@ struct vector {
         }
     }
 
-    void swap(vector &other) noexcept {
+    void swap(vector& other) noexcept {
         std::swap(data_, other.data_);
         std::swap(size_, other.size_);
         std::swap(capacity_, other.capacity_);
@@ -99,31 +99,31 @@ struct vector {
         return data_ + size_;
     }
 
-    iterator insert(const_iterator it, T const &element);
+    iterator insert(const_iterator it, T const& element);
 
     iterator erase(const_iterator it);
 
     iterator erase(const_iterator it1, const_iterator it2);
 
 private:
-    vector(size_t size, size_t capacity, T const *data);
+    vector(size_t size, size_t capacity, T const* data);
 
     void increase_capacity(size_t new_capacity);
 
     size_t next_power(size_t n);
 
-    T *data_;
+    T* data_;
     size_t size_;
     size_t capacity_;
 };
 
 
 template<typename T>
-vector<T>::vector(size_t size, size_t capacity, T const *data) {
+vector<T>::vector(size_t size, size_t capacity, T const* data) {
     capacity_ = capacity;
     size_ = 0;
     if (capacity != 0) {
-        data_ = static_cast<T *>(operator new(capacity * sizeof(T)));
+        data_ = static_cast<T*>(operator new(capacity * sizeof(T)));
     } else {
         data_ = nullptr;
     }
@@ -164,20 +164,20 @@ void vector<T>::increase_capacity(size_t capacity) {
 }
 
 template<typename T>
-vector<T>::vector(const vector &other) : vector() {
+vector<T>::vector(const vector& other) : vector() {
     vector safe(other.size_, other.size_, other.data_);
     swap(safe);
 }
 
 template<typename T>
-vector<T> &vector<T>::operator=(vector const &other) {
+vector<T>& vector<T>::operator=(vector const& other) {
     vector safe(other);
     swap(safe);
     return *this;
 }
 
 template<typename T>
-void vector<T>::push_back(const T &value) {
+void vector<T>::push_back(const T& value) {
     if (size_ == capacity_) {
         T safe = value;
         increase_capacity(next_power(capacity_));
@@ -204,7 +204,7 @@ void vector<T>::shrink_to_fit() {
 }
 
 template<typename T>
-typename vector<T>::iterator vector<T>::insert(const_iterator it, const T &elem) {
+typename vector<T>::iterator vector<T>::insert(const_iterator it, const T& elem) {
     size_t position = it - begin();
     push_back(elem);
     for (size_t i = size_ - 1; i > position; i--) {
