@@ -119,9 +119,7 @@ private:
 
 
 template<typename T>
-vector<T>::vector(size_t size, size_t capacity, T const* data) {
-    capacity_ = capacity;
-    size_ = 0;
+vector<T>::vector(size_t size, size_t capacity, T const* data) : capacity_(capacity), size_(0) {
     if (capacity != 0) {
         data_ = static_cast<T*>(operator new(capacity * sizeof(T)));
     } else {
@@ -143,15 +141,11 @@ vector<T>::vector(size_t size, size_t capacity, T const* data) {
 
 template<typename T>
 size_t vector<T>::next_power(size_t n) {
-    if (n == 0) {
-        return 1;
+    size_t result = 1;
+    while (result <= n) {
+        result *= 2;
     }
-    size_t temp = (n & (n - 1));
-    while (temp != 0) {
-        n = temp;
-        temp = (n & (n - 1));
-    }
-    return 2 * n;
+    return result;
 }
 
 template<typename T>
@@ -164,10 +158,7 @@ void vector<T>::increase_capacity(size_t capacity) {
 }
 
 template<typename T>
-vector<T>::vector(const vector& other) : vector() {
-    vector safe(other.size_, other.size_, other.data_);
-    swap(safe);
-}
+vector<T>::vector(const vector& other) : vector(other.size_, other.size_, other.data_) {}
 
 template<typename T>
 vector<T>& vector<T>::operator=(vector const& other) {
