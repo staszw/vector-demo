@@ -195,7 +195,7 @@ TEST(correctness, data)
     a.push_back(5);
     a.push_back(6);
     a.push_back(7);
-    
+
     {
         element<size_t>* ptr = a.data();
         EXPECT_EQ(5, ptr[0]);
@@ -246,7 +246,7 @@ TEST(correctness, superfluous_reserve)
     {
         vector<element<size_t> > a;
         a.reserve(10);
-        size_t c = a.capacity(); 
+        size_t c = a.capacity();
         EXPECT_GE(c, 10);
         a.reserve(5);
         EXPECT_GE(a.capacity(), 10);
@@ -261,7 +261,7 @@ TEST(correctness, clear)
         a.push_back(5);
         a.push_back(6);
         a.push_back(7);
-        size_t c = a.capacity(); 
+        size_t c = a.capacity();
         a.clear();
         EXPECT_EQ(c, a.capacity());
     }
@@ -273,13 +273,13 @@ TEST(correctness, superfluous_shrink_to_fit)
     {
         vector<element<size_t> > a;
         a.reserve(10);
-        size_t n = a.capacity(); 
+        size_t n = a.capacity();
         for (size_t i = 0; i != n; ++i)
             a.push_back(i);
 
-        element<size_t>* old_data = a.data();        
+        element<size_t>* old_data = a.data();
         a.shrink_to_fit();
-        
+
         EXPECT_EQ(old_data, a.data());
     }
     element<size_t>::expect_no_instances();
@@ -391,23 +391,23 @@ TEST(correctness, insert_end)
 {
     {
         vector<element<size_t> > a;
-        
+
         a.push_back(4);
         a.push_back(5);
         a.push_back(6);
         a.push_back(7);
-    
+
         EXPECT_EQ(4, a.size());
-    
+
         a.insert(a.end(), 8);
         EXPECT_EQ(5, a.size());
         EXPECT_EQ(8, a.back());
-    
+
         a.insert(a.end(), 9);
         EXPECT_EQ(6, a.size());
         EXPECT_EQ(9, a.back());
     }
-    
+
     element<size_t>::expect_no_instances();
 }
 
@@ -415,7 +415,7 @@ TEST(correctness, erase)
 {
     {
         vector<element<size_t> > a;
-        
+
         a.push_back(4);
         a.push_back(5);
         a.push_back(6);
@@ -428,7 +428,7 @@ TEST(correctness, erase)
         EXPECT_EQ(5, a[1]);
         EXPECT_EQ(7, a[2]);
     }
-    
+
     element<size_t>::expect_no_instances();
 }
 
@@ -440,7 +440,7 @@ TEST(correctness, reallocation_throw)
         size_t n = a.capacity();
         for (size_t i = 0; i != n; ++i)
             a.push_back(i);
-        
+
         element<size_t>::set_throw_countdown(7);
         EXPECT_THROW(a.push_back(42), std::runtime_error);
     }
@@ -465,4 +465,69 @@ TEST(correctness, empty_storage_shrink_to_fit)
     EXPECT_NE(nullptr, a.data());
     a.shrink_to_fit();
     EXPECT_EQ(nullptr, a.data());
+}
+
+TEST(correctness, random_insert1) {
+    vector<int> a;
+
+    a.insert(a.begin(), 0);
+    a.insert(a.begin(), 1);
+    a.insert(a.begin() + 1, 2);
+    a.insert(a.begin() + 1, 3);
+    a.insert(a.begin() + 2, 4);
+    a.insert(a.begin() + 2, 5);
+
+    EXPECT_EQ(6, a.size());
+
+    EXPECT_EQ(1, a[0]);
+    EXPECT_EQ(3, a[1]);
+    EXPECT_EQ(5, a[2]);
+    EXPECT_EQ(4, a[3]);
+    EXPECT_EQ(2, a[4]);
+    EXPECT_EQ(0, a[5]);
+}
+
+TEST(correctness, random_insert2) {
+    vector<int> a;
+
+    a.insert(a.begin(), 0);
+    a.insert(a.begin() + 1, 1);
+    a.insert(a.begin(), 2);
+    a.insert(a.begin() + 2, 3);
+    a.insert(a.begin() + 1, 4);
+    a.insert(a.begin() + 4, 5);
+
+    EXPECT_EQ(6, a.size());
+
+    EXPECT_EQ(2, a[0]);
+    EXPECT_EQ(4, a[1]);
+    EXPECT_EQ(0, a[2]);
+    EXPECT_EQ(3, a[3]);
+    EXPECT_EQ(5, a[4]);
+    EXPECT_EQ(1, a[5]);
+}
+
+TEST(correctness, random_erase) {
+    vector<element<size_t> > a;
+
+    a.push_back(0);
+    a.push_back(1);
+    a.push_back(2);
+    a.push_back(3);
+    a.push_back(4);
+
+    a.erase(a.begin() + 1, a.begin() + 3);
+
+    EXPECT_EQ(3, a.size());
+    EXPECT_EQ(0, a[0]);
+    EXPECT_EQ(3, a[1]);
+    EXPECT_EQ(4, a[2]);
+
+    a.erase(a.begin(), a.begin() + 2);
+
+    EXPECT_EQ(1, a.size());
+    EXPECT_EQ(4, a[0]);
+
+    a.erase(a.begin(), a.end());
+    element<size_t>::expect_no_instances();
 }
