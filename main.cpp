@@ -107,7 +107,7 @@ template<typename T>
 size_t element<T>::throw_countdown = 0;
 
 TEST(correctness, default_ctor) {
-    vector<element<int> > a;
+    vector<element<int>> a;
     element<int>::expect_no_instances();
     EXPECT_TRUE(a.empty());
     EXPECT_EQ(0, a.size());
@@ -115,7 +115,7 @@ TEST(correctness, default_ctor) {
 
 TEST(correctness, push_back) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         for (size_t i = 0; i != 200; ++i)
             a.push_back(i);
 
@@ -128,7 +128,7 @@ TEST(correctness, push_back) {
 
 TEST(correctness, push_back_from_self) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.push_back(42);
         for (size_t i = 0; i != 100; ++i)
             a.push_back(a[0]);
@@ -166,7 +166,7 @@ TEST(correctness, subscription) {
 }
 
 TEST(correctness, data) {
-    vector<element<size_t> > a;
+    vector<element<size_t>> a;
     a.push_back(5);
     a.push_back(6);
     a.push_back(7);
@@ -187,7 +187,7 @@ TEST(correctness, data) {
 }
 
 TEST(correctness, front_back) {
-    vector<element<size_t> > a;
+    vector<element<size_t>> a;
     a.push_back(5);
     a.push_back(6);
     a.push_back(7);
@@ -201,7 +201,7 @@ TEST(correctness, front_back) {
 
 TEST(correctness, capacity) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.reserve(10);
         EXPECT_GE(a.capacity(), 10);
         a.push_back(5);
@@ -216,7 +216,7 @@ TEST(correctness, capacity) {
 
 TEST(correctness, superfluous_reserve) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.reserve(10);
         size_t c = a.capacity();
         EXPECT_GE(c, 10);
@@ -228,7 +228,7 @@ TEST(correctness, superfluous_reserve) {
 
 TEST(correctness, clear) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.push_back(5);
         a.push_back(6);
         a.push_back(7);
@@ -241,7 +241,7 @@ TEST(correctness, clear) {
 
 TEST(correctness, superfluous_shrink_to_fit) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.reserve(10);
         size_t n = a.capacity();
         for (size_t i = 0; i != n; ++i)
@@ -258,11 +258,11 @@ TEST(correctness, superfluous_shrink_to_fit) {
 TEST(correctness, copy_ctor) {
     {
         size_t const N = 5;
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         for (size_t i = 0; i != N; ++i)
             a.push_back(i);
 
-        vector<element<size_t> > b = a;
+        vector<element<size_t>> b = a;
         for (size_t i = 0; i != N; ++i)
             EXPECT_EQ(i, b[i]);
     }
@@ -272,11 +272,11 @@ TEST(correctness, copy_ctor) {
 TEST(correctness, assignment_operator) {
     {
         size_t const N = 5;
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         for (size_t i = 0; i != N; ++i)
             a.push_back(i);
 
-        vector<element<size_t> > b;
+        vector<element<size_t>> b;
         b.push_back(42);
 
         b = a;
@@ -292,7 +292,7 @@ TEST(correctness, assignment_operator) {
 
 TEST(correctness, self_assignment) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.push_back(5);
         a.push_back(6);
         a.push_back(7);
@@ -307,7 +307,7 @@ TEST(correctness, self_assignment) {
 }
 
 TEST(correctness, pop_back) {
-    vector<element<size_t> > a;
+    vector<element<size_t>> a;
     a.push_back(5);
     a.push_back(6);
     a.push_back(7);
@@ -328,7 +328,7 @@ TEST(correctness, pop_back) {
 }
 
 TEST(correctness, empty) {
-    vector<element<size_t> > a;
+    vector<element<size_t>> a;
 
     EXPECT_TRUE(a.empty());
     a.push_back(5);
@@ -339,7 +339,7 @@ TEST(correctness, empty) {
 
 TEST(correctness, insert_begin) {
     size_t const N = 100;
-    vector<element<size_t> > a;
+    vector<element<size_t>> a;
 
     for (size_t i = 0; i != N; ++i)
         a.insert(a.begin(), i);
@@ -352,7 +352,7 @@ TEST(correctness, insert_begin) {
 
 TEST(correctness, insert_end) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
 
         a.push_back(4);
         a.push_back(5);
@@ -375,7 +375,7 @@ TEST(correctness, insert_end) {
 
 TEST(correctness, erase) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
 
         a.push_back(4);
         a.push_back(5);
@@ -395,7 +395,7 @@ TEST(correctness, erase) {
 
 TEST(correctness, reallocation_throw) {
     {
-        vector<element<size_t> > a;
+        vector<element<size_t>> a;
         a.reserve(10);
         size_t n = a.capacity();
         for (size_t i = 0; i != n; ++i)
